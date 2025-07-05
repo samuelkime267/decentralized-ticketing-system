@@ -142,6 +142,36 @@ contract EventStorage {
         return s_events[eventId];
     }
 
+    function getAllEvents() external view returns (Event[] memory) {
+        if (s_eventId == 1) return new Event[](0);
+
+        Event[] memory events = new Event[](s_eventId);
+        uint256 count = 0;
+
+        for (uint256 i = 1; i < s_eventId; i++) {
+            Event memory ev = s_events[i];
+            if (ev.id == 0) continue;
+
+            events[count] = Event({
+                id: ev.id,
+                name: ev.name,
+                eventCreator: ev.eventCreator,
+                description: ev.description,
+                location: ev.location,
+                startTime: ev.startTime,
+                endTime: ev.endTime,
+                metaDataUri: ev.metaDataUri,
+                price: ev.price,
+                ticketUri: ev.ticketUri,
+                popUri: ev.popUri
+            });
+
+            count++;
+        }
+
+        return events;
+    }
+
     function getEventId() external view returns (uint256) {
         return s_eventId;
     }
